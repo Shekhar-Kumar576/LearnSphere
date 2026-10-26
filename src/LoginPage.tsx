@@ -43,6 +43,7 @@ export default function LoginPage() {
     savedAccounts,
     removeSavedAccount,
     switchAccount,
+    isConfigured,
     error,
     setError,
   } = useAuth()
@@ -1237,7 +1238,9 @@ export default function LoginPage() {
                 type="button"
                 onClick={() => {
                   setError(null)
-                  if (email.trim().includes("@")) {
+                  if (isConfigured) {
+                    handleGoogleLogin(email.trim() || undefined, name.trim() || undefined, role)
+                  } else if (email.trim().includes("@")) {
                     handleGoogleLogin(email.trim(), name.trim(), role)
                   } else {
                     setGoogleEmail(email.trim())

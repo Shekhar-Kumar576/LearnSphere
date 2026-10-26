@@ -401,8 +401,32 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setError("Sign-in was cancelled.")
           return
         }
-        // Fall back to prompt if Firebase key had issue
+        if (code === "auth/unauthorized-domain") {
+          setError(
+            "Unauthorized domain: Please add your Vercel domain to Firebase Console -> Authentication -> Settings -> Authorized domains.",
+          )
+          return
+        }
+        if (code === "auth/operation-not-allowed") {
+          setError(
+            "Google provider is not enabled in Firebase. Please enable it in Firebase Console -> Authentication -> Sign-in method.",
+          )
+          return
+        }
+        if (
+          code === "auth/configuration-not-found" ||
+          code === "auth/invalid-api-key"
+        ) {
+          setError(
+            "Invalid Firebase configuration. Please check your VITE_FIREBASE_* environment variables in Vercel.",
+          )
+          return
+        }
         console.warn("Firebase Google OAuth issue:", err)
+        const errMsg =
+          (err as { message?: string })?.message || "Google Sign-In failed."
+        setError(errMsg)
+        return
       }
     }
 
