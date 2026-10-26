@@ -1,0 +1,84 @@
+{
+  "dataset_name": "LearnSphere AI Prototype Sample Learning Content",
+  "version": "1.0",
+  "purpose": "Standalone example content matching the prototype's embedded supervised-learning lesson and quiz. This is educational demo content, not an ML training corpus or production user data.",
+  "source_note": "Adapted from the sample lesson and quiz embedded in LearnSphere/src/App.tsx in the supplied archive.",
+  "lessons": [
+    {
+      "id": "supervised",
+      "title": "Supervised Learning Basics",
+      "module": "Machine Learning Foundations",
+      "video_asset": "public/ml-lesson.mp4 (WebM alternative: public/ml-lesson.webm)",
+      "summary": "Supervised learning trains a model from labelled examples. Classification predicts a category, while regression predicts a numeric value. A separate test set estimates performance on examples not used for training.",
+      "transcript": [
+        { "timestamp": "00:00", "topic": "Learning from examples", "text": "Supervised learning uses examples paired with the correct answer, called a label." },
+        { "timestamp": "00:16", "topic": "Features and labels", "text": "Features describe an example. The label is the target a model learns to predict." },
+        { "timestamp": "00:32", "topic": "Classification", "text": "Classification predicts a category, such as whether an email is spam." },
+        { "timestamp": "00:48", "topic": "Regression", "text": "Regression predicts a numeric value, such as a house price." },
+        { "timestamp": "01:04", "topic": "Training data", "text": "Training examples are used to fit the model's parameters." },
+        { "timestamp": "01:20", "topic": "Test data", "text": "A separate test set checks how well the trained model generalises to unseen examples." },
+        { "timestamp": "01:36", "topic": "Key takeaway", "text": "Keep evaluation examples separate from training examples to get a more useful estimate of performance." }
+      ]
+    },
+    {
+      "id": "neural-networks",
+      "title": "Neural Networks Explained",
+      "module": "Deep Learning",
+      "summary": "Neural networks combine layers of connected units. During training, weights and biases are adjusted to reduce prediction error.",
+      "transcript": [
+        { "timestamp": "00:00", "topic": "Layers and units", "text": "A neural network passes input through connected layers of computational units." },
+        { "timestamp": "01:00", "topic": "Weights and biases", "text": "Weights control connection strength; biases shift a unit's activation." },
+        { "timestamp": "02:00", "topic": "Learning patterns", "text": "Training adjusts weights and biases to reduce prediction error." }
+      ]
+    },
+    {
+      "id": "gradient-descent",
+      "title": "Gradient Descent and Learning",
+      "module": "Optimisation",
+      "summary": "Gradient descent minimises a loss function by updating parameters in the direction that reduces loss. The learning rate controls update size.",
+      "transcript": [
+        { "timestamp": "00:00", "topic": "Loss function", "text": "A loss function measures how far predictions are from desired outputs." },
+        { "timestamp": "01:00", "topic": "The gradient", "text": "Gradient descent moves opposite the gradient to reduce the loss." },
+        { "timestamp": "02:00", "topic": "Learning rate", "text": "The learning rate sets each update size and affects training stability." }
+      ]
+    },
+    {
+      "id": "backpropagation",
+      "title": "Backpropagation Intuition",
+      "module": "Deep Learning",
+      "summary": "Backpropagation applies the chain rule to calculate how model parameters contribute to loss, allowing an optimiser to update them.",
+      "transcript": [
+        { "timestamp": "00:00", "topic": "Gradient calculation", "text": "Backpropagation efficiently computes parameter gradients in a neural network." },
+        { "timestamp": "01:00", "topic": "Chain rule", "text": "The chain rule connects derivatives across layers so loss gradients can flow backward." },
+        { "timestamp": "02:00", "topic": "Parameter updates", "text": "An optimiser uses computed gradients to update weights and biases." }
+      ]
+    }
+  ],
+  "quiz": {
+    "id": "supervised-learning-basics",
+    "title": "Supervised Learning Basics",
+    "questions": [
+      {
+        "id": "q1",
+        "question": "Which type of learning uses labelled training data?",
+        "options": ["Unsupervised learning", "Supervised learning", "Reinforcement learning", "Random search"],
+        "correct_option_index": 1,
+        "explanation": "Supervised learning uses input examples paired with known labels or target values."
+      },
+      {
+        "id": "q2",
+        "question": "Predicting a house price is usually which kind of task?",
+        "options": ["Classification", "Clustering", "Regression", "Reinforcement learning"],
+        "correct_option_index": 2,
+        "explanation": "House price is a numeric value, so this is a regression task."
+      },
+      {
+        "id": "q3",
+        "question": "Why is a separate test set useful?",
+        "options": ["It increases the number of training labels", "It estimates performance on unseen examples", "It removes the need to train a model", "It guarantees a perfect model"],
+        "correct_option_index": 1,
+        "explanation": "A held-out test set provides an estimate of how well a trained model generalises to unseen data."
+      }
+    ]
+  }
+}

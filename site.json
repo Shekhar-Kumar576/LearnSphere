@@ -1,0 +1,11 @@
+{
+  "description": "AI-powered learning workspace for machine learning lessons, quizzes, and mock interviews.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  },
+  "title": "LearnSphere AI"
+}
