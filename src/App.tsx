@@ -1101,40 +1101,79 @@ function VideoUploadModal({
       <div
         className="upload-modal card"
         onClick={(e) => e.stopPropagation()}
-        style={{ width: "min(580px, 95vw)" }}
+        style={{
+          width: "min(640px, 95vw)",
+          maxHeight: "90vh",
+          display: "flex",
+          flexDirection: "column",
+          overflow: "hidden",
+          margin: "auto",
+          padding: 0,
+        }}
       >
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            padding: "20px 24px 14px",
+            borderBottom: "1px solid var(--line)",
+            flexShrink: 0,
           }}
         >
           <div>
-            <span className="eyebrow">TEACHING VIDEO CMS</span>
-            <h2>Upload Video Lesson &amp; Lecture Notes</h2>
+            <span className="eyebrow" style={{ display: "block", marginBottom: 2 }}>
+              TEACHING VIDEO CMS
+            </span>
+            <h2 style={{ margin: 0, fontSize: "19px", fontWeight: 800 }}>
+              Upload Video Lesson &amp; Lecture Notes
+            </h2>
           </div>
           <button
             onClick={onClose}
             style={{
               border: 0,
-              background: "none",
+              background: "rgba(255,255,255,0.08)",
               color: "var(--muted)",
               fontSize: "18px",
               cursor: "pointer",
+              width: "32px",
+              height: "32px",
+              borderRadius: "8px",
+              display: "grid",
+              placeItems: "center",
             }}
           >
             ×
           </button>
         </div>
-        <p>
-          Select or create your course, upload your lecture video, and optionally
-          attach lecture notes (.pdf, .ppt, .pptx, .docx, .txt) for your students.
-        </p>
 
-        {error && <div className="iv-banner err">{error}</div>}
+        <form
+          onSubmit={handleUpload}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            flex: 1,
+            minHeight: 0,
+            overflow: "hidden",
+          }}
+        >
+          <div
+            style={{
+              overflowY: "auto",
+              padding: "16px 24px",
+              display: "grid",
+              gap: "14px",
+              flex: 1,
+              minHeight: 0,
+            }}
+          >
+            <p style={{ margin: 0, fontSize: "12px", color: "var(--muted)", lineHeight: 1.5 }}>
+              Select or create your course, upload your lecture video, and optionally
+              attach lecture notes (.pdf, .ppt, .pptx, .docx, .txt) for your students.
+            </p>
 
-        <form onSubmit={handleUpload} style={{ display: "grid", gap: "14px" }}>
+            {error && <div className="iv-banner err">{error}</div>}
           {/* Video file picker */}
           <label className="upload-field">
             <span>1. Choose Video File (.mp4, .webm) *</span>
@@ -1400,12 +1439,19 @@ function VideoUploadModal({
             )}
           </div>
 
+          </div>
+
+          {/* Sticky Footer — Always fully visible! */}
           <div
             style={{
               display: "flex",
               gap: "10px",
               justifyContent: "flex-end",
-              marginTop: "10px",
+              alignItems: "center",
+              padding: "14px 24px",
+              borderTop: "1px solid var(--line)",
+              background: "var(--surface)",
+              flexShrink: 0,
             }}
           >
             <button
@@ -1420,6 +1466,13 @@ function VideoUploadModal({
               type="submit"
               className="btn primary"
               disabled={uploading || !file}
+              style={{
+                minHeight: "42px",
+                padding: "0 24px",
+                fontWeight: 700,
+                fontSize: "13px",
+                boxShadow: "0 4px 14px rgba(99, 102, 241, 0.35)",
+              }}
             >
               {uploading
                 ? notesFile
@@ -1519,41 +1572,80 @@ function NotesUploadModal({
       <div
         className="upload-modal card"
         onClick={(e) => e.stopPropagation()}
-        style={{ width: "min(580px, 95vw)" }}
+        style={{
+          width: "min(640px, 95vw)",
+          maxHeight: "90vh",
+          display: "flex",
+          flexDirection: "column",
+          overflow: "hidden",
+          margin: "auto",
+          padding: 0,
+        }}
       >
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            padding: "20px 24px 14px",
+            borderBottom: "1px solid var(--line)",
+            flexShrink: 0,
           }}
         >
           <div>
-            <span className="eyebrow">TEACHER PORTAL • COURSE CMS</span>
-            <h2>Upload Lecture Notes &amp; Slides</h2>
+            <span className="eyebrow" style={{ display: "block", marginBottom: 2 }}>
+              TEACHER PORTAL • COURSE CMS
+            </span>
+            <h2 style={{ margin: 0, fontSize: "19px", fontWeight: 800 }}>
+              Upload Lecture Notes &amp; Slides
+            </h2>
           </div>
           <button
             onClick={onClose}
             style={{
               border: 0,
-              background: "none",
+              background: "rgba(255,255,255,0.08)",
               color: "var(--muted)",
               fontSize: "18px",
               cursor: "pointer",
+              width: "32px",
+              height: "32px",
+              borderRadius: "8px",
+              display: "grid",
+              placeItems: "center",
             }}
           >
             ×
           </button>
         </div>
-        <p>
-          Upload lecture slides, handouts, formula sheets, or study notes (.pdf,
-          .ppt, .pptx, .docx, .txt). Stored in LearnSphere database, indexed for
-          AI answers, and available in the student dashboard and resource library.
-        </p>
 
-        {error && <div className="iv-banner err">{error}</div>}
+        <form
+          onSubmit={handleUpload}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            flex: 1,
+            minHeight: 0,
+            overflow: "hidden",
+          }}
+        >
+          <div
+            style={{
+              overflowY: "auto",
+              padding: "16px 24px",
+              display: "grid",
+              gap: "14px",
+              flex: 1,
+              minHeight: 0,
+            }}
+          >
+            <p style={{ margin: 0, fontSize: "12px", color: "var(--muted)", lineHeight: 1.5 }}>
+              Upload lecture slides, handouts, formula sheets, or study notes (.pdf,
+              .ppt, .pptx, .docx, .txt). Stored in LearnSphere database, indexed for
+              AI answers, and available in the student dashboard and resource library.
+            </p>
 
-        <form onSubmit={handleUpload} style={{ display: "grid", gap: "14px" }}>
+            {error && <div className="iv-banner err">{error}</div>}
           <label className="upload-field">
             <span>1. Choose Notes / Document File *</span>
             <input
@@ -1639,12 +1731,19 @@ function NotesUploadModal({
             </select>
           </label>
 
+          </div>
+
+          {/* Sticky Footer — Always fully visible! */}
           <div
             style={{
               display: "flex",
               gap: "10px",
               justifyContent: "flex-end",
-              marginTop: "10px",
+              alignItems: "center",
+              padding: "14px 24px",
+              borderTop: "1px solid var(--line)",
+              background: "var(--surface)",
+              flexShrink: 0,
             }}
           >
             <button
@@ -1659,6 +1758,13 @@ function NotesUploadModal({
               type="submit"
               className="btn primary"
               disabled={uploading || !file}
+              style={{
+                minHeight: "42px",
+                padding: "0 24px",
+                fontWeight: 700,
+                fontSize: "13px",
+                boxShadow: "0 4px 14px rgba(99, 102, 241, 0.35)",
+              }}
             >
               {uploading ? "Extracting & Uploading…" : "Upload Lecture Notes"}
             </button>
