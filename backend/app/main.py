@@ -41,7 +41,7 @@ try:
 except (ImportError, ValueError):
     import ai, db, media_utils
 
-UPLOAD_DIR = Path(os.getenv("UPLOAD_DIR", "./data/uploads"))
+UPLOAD_DIR = Path(os.getenv("UPLOAD_DIR", "/tmp/uploads" if os.getenv("VERCEL") else "./data/uploads"))
 VIDEOS_DIR = UPLOAD_DIR / "videos"
 DOCS_DIR = UPLOAD_DIR / "documents"
 

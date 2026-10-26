@@ -1,21 +1,13 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "services": {
-    "learnsphere": {
-      "root": "LearnSphere",
-      "framework": "vite"
-    },
-    "backend": {
-      "root": "LearnSphere/backend",
-      "framework": "fastapi"
-    }
-  },
   "rewrites": [
     {
+      "source": "/api/:match*",
+      "destination": "/api/index.py"
+    },
+    {
       "source": "/(.*)",
-      "destination": {
-        "service": "backend"
-      }
+      "destination": "/index.html"
     }
   ]
 }
