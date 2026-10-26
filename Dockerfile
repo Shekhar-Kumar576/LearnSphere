@@ -26,8 +26,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY backend/requirements.txt ./backend/
 RUN pip install --no-cache-dir -r backend/requirements.txt
 
-# Copy backend application source and frontend dist
+# Copy backend application source, pre-seeded data, and frontend dist
 COPY backend/ ./backend/
+COPY data/ ./data/
 COPY --from=frontend-builder /app/dist ./dist
 
 # Create runtime data directories with permissions for Hugging Face non-root user
