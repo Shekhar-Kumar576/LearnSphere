@@ -5,7 +5,19 @@ import sqlite3
 from contextlib import contextmanager
 from pathlib import Path
 
-DB_PATH = os.getenv("DATABASE_PATH", "/tmp/learnsphere.db" if os.getenv("VERCEL") else "./data/app.db")
+def _resolve_db_path() -> str:
+    custom = os.getenv("DATABASE_PATH")
+    if custom:
+        return custom
+    if os.getenv("VERCEL") or os.getenv("AWS_LAMBDA_FUNCTION_NAME"):
+        return "/tmp/learnsphere.db"
+    try:
+        Path("./data").mkdir(parents=True, exist_ok=True)
+        return "./data/app.db"
+    except OSError:
+        return "/tmp/learnsphere.db"
+
+DB_PATH = _resolve_db_path()
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS users (

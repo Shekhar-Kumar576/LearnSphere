@@ -294,9 +294,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, password, role }),
     })
-    const data = await res.json()
+    let data: any = null
+    try {
+      data = await res.json()
+    } catch {
+      const msg = `Server returned an error (${res.status}). Please check function logs.`
+      setError(msg)
+      throw new Error(msg)
+    }
     if (!res.ok) {
-      const msg = data.error || `Registration failed (${res.status})`
+      const msg = data?.error || `Registration failed (${res.status})`
       setError(msg)
       throw new Error(msg)
     }
@@ -326,9 +333,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password, role }),
     })
-    const data = await res.json()
+    let data: any = null
+    try {
+      data = await res.json()
+    } catch {
+      const msg = `Server returned an error (${res.status}). Please check function logs.`
+      setError(msg)
+      throw new Error(msg)
+    }
     if (!res.ok) {
-      const msg = data.error || `Login failed (${res.status})`
+      const msg = data?.error || `Login failed (${res.status})`
       setError(msg)
       throw new Error(msg)
     }

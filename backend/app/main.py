@@ -41,7 +41,20 @@ try:
 except (ImportError, ValueError):
     import ai, db, media_utils
 
-UPLOAD_DIR = Path(os.getenv("UPLOAD_DIR", "/tmp/uploads" if os.getenv("VERCEL") else "./data/uploads"))
+def _resolve_upload_dir() -> Path:
+    custom = os.getenv("UPLOAD_DIR")
+    if custom:
+        return Path(custom)
+    if os.getenv("VERCEL") or os.getenv("AWS_LAMBDA_FUNCTION_NAME"):
+        return Path("/tmp/uploads")
+    try:
+        p = Path("./data/uploads")
+        p.mkdir(parents=True, exist_ok=True)
+        return p
+    except OSError:
+        return Path("/tmp/uploads")
+
+UPLOAD_DIR = _resolve_upload_dir()
 VIDEOS_DIR = UPLOAD_DIR / "videos"
 DOCS_DIR = UPLOAD_DIR / "documents"
 
