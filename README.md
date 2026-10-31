@@ -48,44 +48,7 @@ LearnSphere combines a React learning interface with a FastAPI service. Learners
 
 ## Architecture
 
-```mermaid
-%%{init: {"theme": "base", "themeVariables": {"fontFamily": "Inter, Segoe UI, sans-serif", "fontSize": "15px", "lineColor": "#64748b", "textColor": "#172033", "mainBkg": "#ffffff", "nodeBorder": "#cbd5e1", "clusterBkg": "#f8fafc", "clusterBorder": "#cbd5e1", "edgeLabelBackground": "#ffffff"}}}%%
-flowchart LR
-    Learner[Student or teacher browser] --> UI[React + TypeScript SPA]
-    UI -->|JSON / multipart, X-User-Id| API[FastAPI application]
-    API --> Auth[Account and identity helpers]
-    API --> Content[Course, video, resource and quiz routes]
-    API --> Tutor[Chat and interview orchestration]
-    Content --> DB[(SQLite application database)]
-    Tutor --> DB
-    Content --> Extract[PDF / PPTX text extraction]
-    Extract --> RAGIndex[RAG indexer]
-    RAGIndex --> RAGDB[(SQLite RAG index)]
-    Tutor --> Retriever[TF-IDF lexical retrieval]
-    Retriever --> RAGDB
-    Tutor --> Prompt[Prompt with lesson position + context]
-    Prompt --> Provider{AI provider configured?}
-    Provider -->|OpenAI| OpenAI[OpenAI API]
-    Provider -->|Gemini| Gemini[Google Gemini API]
-    Provider -->|No key| Demo[Deterministic demo fallback]
-    Content --> Files[(Local upload directory)]
-    API -->|built assets and SPA fallback| UI
-
-    classDef client fill:#e0f2fe,stroke:#0284c7,color:#0c4a6e,stroke-width:2px;
-    classDef service fill:#dbeafe,stroke:#2563eb,color:#1e3a8a,stroke-width:2px;
-    classDef feature fill:#ede9fe,stroke:#7c3aed,color:#4c1d95,stroke-width:1.5px;
-    classDef storage fill:#dcfce7,stroke:#16a34a,color:#14532d,stroke-width:2px;
-    classDef retrieval fill:#fef3c7,stroke:#d97706,color:#78350f,stroke-width:1.5px;
-    classDef model fill:#fce7f3,stroke:#db2777,color:#831843,stroke-width:1.5px;
-    classDef decision fill:#ffedd5,stroke:#ea580c,color:#7c2d12,stroke-width:2px;
-    class Learner,UI client;
-    class API service;
-    class Auth,Content,Tutor,Extract feature;
-    class DB,RAGDB,Files storage;
-    class RAGIndex,Retriever,Prompt retrieval;
-    class Provider decision;
-    class OpenAI,Gemini,Demo model;
-```
+![LearnSphere AI system architecture](public/learnsphere-architecture.png)
 
 ### Runtime request flow
 
