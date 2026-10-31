@@ -126,8 +126,8 @@ The Python service reads environment variables from its process environment. `.e
 | Variable | Default | Description |
 |---|---|---|
 | `GEMINI_API_KEY` | unset | Gemini credential; used if no valid OpenAI key is configured |
-| `GEMINI_MODELS` | `gemini-2.5-flash` | Comma-separated Gemini model fallback order |
-| `GEMINI_MODEL` | `gemini-2.5-flash` | Single Gemini model when `GEMINI_MODELS` is absent |
+| `GEMINI_MODELS` | `gemini-3.8-flash` | Comma-separated Gemini model fallback order |
+| `GEMINI_MODEL` | `gemini-3.1-flash-lite` | Single Gemini model when `GEMINI_MODELS` is absent |
 | `OPENAI_API_KEY` | unset | OpenAI credential; takes precedence over Gemini |
 | `OPENAI_MODEL` | `gpt-4o-mini` | OpenAI model name |
 | `RATE_LIMIT_PER_10MIN` | `50` | In-memory AI requests per user in a rolling 10-minute window |
