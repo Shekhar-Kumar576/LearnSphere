@@ -137,7 +137,7 @@ The Python service reads environment variables from its process environment. `.e
 | `HOST` | `127.0.0.1` | Host used by `run.py` |
 | `PORT` | `8000` (`7860` in Docker) | HTTP port |
 | `CORS_ORIGINS` | empty | Comma-separated origins; empty allows wildcard origins without credentials |
-| `VERCEL` | unset | Platform marker; default DB/upload locations move to ephemeral `/tmp` paths |
+| `RENDER` | [https://learnsphere-m2pg.onrender.com] | Platform marker; default DB/upload locations move to ephemeral `/tmp` paths |
 
 The RAG module currently defaults to `./data/rag.db` and does not expose an environment variable for its path.
 
