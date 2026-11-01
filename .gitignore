@@ -64,3 +64,5 @@ data/uploads/
 *.webm
 *.avi
 *.mkv
+
+data/rag.db
