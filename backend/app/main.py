@@ -8,6 +8,7 @@ Comprehensive REST API providing:
 - Real Database Persistence (SQLite), User Data Management, and History
 """
 import httpx
+import hmac
 import logging
 import os
 import re
@@ -37,9 +38,9 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 try:
-    from . import ai, db, media_utils
+    from . import ai, db, media_utils, rag
 except (ImportError, ValueError):
-    import ai, db, media_utils
+    import ai, db, media_utils, rag
 
 def _resolve_upload_dir() -> Path:
     custom = os.getenv("UPLOAD_DIR")
@@ -64,6 +65,13 @@ async def lifespan(_: FastAPI):
     db.init_db()
     VIDEOS_DIR.mkdir(parents=True, exist_ok=True)
     DOCS_DIR.mkdir(parents=True, exist_ok=True)
+    # Initialize RAG database and reindex existing documents
+    try:
+        rag.initialize_rag_db()
+        stats = rag.reindex_all_resources()
+        logger.info(f"RAG initialized: {stats['total_documents']} docs, {stats['total_chunks']} chunks")
+    except Exception as e:
+        logger.warning(f"RAG initialization failed: {e}")
     yield
 
 
@@ -257,6 +265,30 @@ def health():
         "provider": ai.active_provider(),
         "model": ai.primary_model(),
     }
+
+
+@app.get("/api/admin/tables")
+def admin_tables(x_admin_token: str = Header(default="")):
+    """List SQLite tables and a small, read-only page of rows for live inspection."""
+    expected = os.getenv("ADMIN_VIEWER_TOKEN", "")
+    if not expected:
+        raise HTTPException(503, "Admin viewer is not configured")
+    if not hmac.compare_digest(x_admin_token, expected):
+        raise HTTPException(403, "Invalid admin token")
+    with db.conn() as c:
+        tables = [row[0] for row in c.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name"
+        ).fetchall()]
+        result = {}
+        for table in tables:
+            # Names originate from sqlite_master, not request input; quote for SQL safety.
+            quoted = '"' + table.replace('"', '""') + '"'
+            rows = c.execute(f"SELECT * FROM {quoted} ORDER BY rowid DESC LIMIT 100").fetchall()
+            result[table] = [
+                {key: value for key, value in dict(row).items() if key != "password_hash"}
+                for row in rows
+            ]
+    return {"database": os.path.basename(db.DB_PATH), "limitPerTable": 100, "tables": result}
 
 
 @app.get("/api/stats")
@@ -825,6 +857,18 @@ async def upload_resource(
         )
         res_id = cur.lastrowid
 
+    # Index the document in RAG immediately after upload
+    if extracted_text:
+        try:
+            rag.index_document(
+                source_id=str(res_id),
+                source_type="resource",
+                source_title=doc_title,
+                original_text=extracted_text,
+            )
+        except Exception as e:
+            logger.warning(f"RAG indexing failed for resource {res_id}: {e}")
+
     return {
         "id": res_id,
         "title": doc_title,
@@ -904,10 +948,24 @@ async def chat(body: ChatIn, user: str = Depends(ai_limit)):
                 video_title = v_row["title"]
                 video_transcript = v_row["transcript_text"] or ""
 
-        notes_rows = c.execute("SELECT title, extracted_text FROM resources WHERE extracted_text != '' LIMIT 3").fetchall()
-        notes_context = "\n\n".join(f"[{r['title']}]: {r['extracted_text'][:2000]}" for r in notes_rows)
+    # RAG: Use TF-IDF search to find relevant chunks
+    rag_context = ""
+    try:
+        rag_context, _ = rag.get_context_for_query(
+            query=body.question,
+            video_id=body.videoId,
+            max_tokens=2000
+        )
+    except Exception as e:
+        logger.warning(f"RAG search failed, falling back to simple retrieval: {e}")
+        # Fallback to old behavior
+        with db.conn() as c:
+            notes_rows = c.execute(
+                "SELECT title, extracted_text FROM resources WHERE extracted_text != '' LIMIT 3"
+            ).fetchall()
+        rag_context = "\n\n".join(f"[{r['title']}]: {r['extracted_text'][:2000]}" for r in notes_rows)
 
-    combined_context = f"{body.context}\n\n{video_transcript}\n\n{notes_context}".strip()
+    combined_context = f"{body.context}\n\n{video_transcript}\n\n{rag_context}".strip()
 
     answer = await ai.tutor_answer(
         question=body.question,
@@ -1316,6 +1374,60 @@ def get_interview_detail(session_id: int, user: str = Depends(current_user)):
             ],
             "summary": db.jload(sess["summary"]),
         }
+
+
+# ---------- 3c. RAG API Endpoints ----------
+@app.get("/api/rag/stats")
+def get_rag_stats():
+    """Get statistics about the RAG index."""
+    try:
+        stats = rag.get_index_stats()
+        return {"ok": True, "stats": stats}
+    except Exception as e:
+        return {"ok": False, "error": str(e)}
+
+
+@app.post("/api/rag/reindex")
+def reindex_rag():
+    """Re-index all documents from the main database."""
+    try:
+        stats = rag.reindex_all_resources()
+        return {"ok": True, "stats": stats}
+    except Exception as e:
+        raise HTTPException(500, f"Reindex failed: {e}")
+
+
+@app.post("/api/rag/clear")
+def clear_rag_index():
+    """Clear all indexed data."""
+    try:
+        rag.clear_index()
+        return {"ok": True, "message": "RAG index cleared"}
+    except Exception as e:
+        raise HTTPException(500, f"Clear failed: {e}")
+
+
+@app.post("/api/rag/search")
+def search_rag(body: dict):
+    """Search for relevant chunks using RAG."""
+    query = body.get("query", "")
+    source_id = body.get("source_id")
+    source_type = body.get("source_type")
+    top_k = body.get("top_k", 5)
+
+    if not query:
+        raise HTTPException(400, "Query is required")
+
+    try:
+        chunks = rag.search_chunks(
+            query=query,
+            source_id=source_id,
+            source_type=source_type,
+            top_k=top_k
+        )
+        return {"ok": True, "chunks": chunks, "count": len(chunks)}
+    except Exception as e:
+        raise HTTPException(500, f"Search failed: {e}")
 
 
 # ---------- Static Frontend Serving (Unified Single Localhost) ----------
