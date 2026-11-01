@@ -69,6 +69,13 @@
 .resource-search input{min-width:0;width:100%;border:0;outline:0;background:transparent;color:var(--text);font-size:11px}
 @media(max-width:680px){.resource-search{max-width:100%;min-width:0;flex:1}.section-title.compact{gap:12px;flex-wrap:wrap}}
 
+/* Public landing dashboard */
+.public-landing{--bg:#0e1222;--surface:#171c2e;--surface-2:#1d2338;--surface-3:#242c46;--text:#f2f4ff;--muted:#a4acc0;--line:#2b3249;--violet:#7c6cf0;--indigo:#6366f1;--primary:#7c6cf0;--shadow:0 16px 42px rgba(0,0,0,.22);background:var(--bg);color:var(--text)}
+.public-landing .home-page{padding-top:44px}
+.public-landing .hero{min-height:min(66vh,680px)}
+.home-page.landing-only{padding-bottom:70px}
+.home-page.landing-only>.section-block,.home-page.landing-only>.home-lower{display:none}
+
 /* ---- Mock Interview (readable sizes, uses existing theme variables) ---- */
 .iv-wrap{max-width:960px}.iv-wrap input,.iv-wrap select,.iv-wrap textarea{width:100%;background:var(--surface-2);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:11px 12px;font-size:14px}
 .iv-tabs{display:flex;gap:8px;border-bottom:1px solid var(--line);margin-bottom:20px}.iv-tabs button{border:0;background:none;color:var(--muted);padding:12px 6px;margin-right:12px;font-size:14px;font-weight:700;border-bottom:2px solid transparent}.iv-tabs button.active{color:var(--violet);border-color:var(--violet)}

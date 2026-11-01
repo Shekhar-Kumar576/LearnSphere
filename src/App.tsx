@@ -2420,6 +2420,7 @@ function App() {
     switchAccount,
     updateUserRole,
   } = useAuth()
+  const [loginOpen, setLoginOpen] = useState(false)
   const [accountSwitcherOpen, setAccountSwitcherOpen] = useState(false)
   const [route, setRoute] = useState<Route>("home")
   const [menuOpen, setMenuOpen] = useState(false)
@@ -2545,16 +2546,20 @@ function App() {
     api<Health>("/api/health")
       .then(setHealth)
       .catch(() => setHealth(null))
-    refreshCourses()
-    refreshVideos()
-    refreshResources()
-    refreshHistory()
   }, [])
 
   useEffect(() => {
+    if (!user) return
+    refreshCourses()
+    refreshVideos()
+    refreshResources()
+  }, [user])
+
+  useEffect(() => {
+    if (!user) return
     refreshStats()
     refreshHistory()
-  }, [route])
+  }, [route, user])
 
   useEffect(() => {
     if (user) {
@@ -2667,7 +2672,13 @@ function App() {
     )
   }
 
-  if (!user) return <LoginPage />
+  if (!user) {
+    return loginOpen ? (
+      <LoginPage onBack={() => setLoginOpen(false)} />
+    ) : (
+      <LandingDashboard onLogin={() => setLoginOpen(true)} />
+    )
+  }
 
   const isTeacher = user.role === "teacher"
 
@@ -3134,6 +3145,224 @@ function PageHeading({
   )
 }
 
+function LandingDashboard({ onLogin }: { onLogin: () => void }) {
+  const [menuOpen, setMenuOpen] = useState(false)
+
+  const chooseTab = () => {
+    setMenuOpen(false)
+    onLogin()
+  }
+
+  return (
+    <div className="app-shell public-landing">
+      <aside className={`sidebar ${menuOpen ? "open" : ""}`}>
+        <div className="side-top">
+          <Logo />
+          <button
+            className="mobile-close"
+            aria-label="Close menu"
+            onClick={() => setMenuOpen(false)}
+          >
+            <Icon name="close" />
+          </button>
+        </div>
+        <nav aria-label="Primary navigation">
+          <p className="eyebrow side-label">LEARNING SPACE</p>
+          {nav
+            .filter((item) => item.id !== "settings")
+            .map((item) => (
+              <button
+                key={item.id}
+                onClick={chooseTab}
+                className={item.id === "home" ? "active" : ""}
+              >
+                <Icon name={item.icon} />
+                <span>{item.label}</span>
+                {(item.id === "workspace" || item.id === "interview") && (
+                  <b>AI</b>
+                )}
+              </button>
+            ))}
+          <p className="eyebrow side-label lower">PREFERENCES</p>
+          <button onClick={chooseTab}>
+            <Icon name="settings" />
+            <span>Settings</span>
+          </button>
+        </nav>
+        <div className="side-bottom">
+          {/* Role badge */}
+          <div
+            onClick={chooseTab}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              padding: "9px 10px",
+              borderRadius: 10,
+              background: "rgba(52,211,153,0.08)",
+              border: "1px solid rgba(52,211,153,0.22)",
+              marginBottom: 10,
+              fontSize: 10,
+              fontWeight: 700,
+              color: "#34d399",
+              cursor: "pointer",
+            }}
+          >
+            <span>👩‍🏫</span>
+            <span style={{ flex: 1 }}>Teacher Mode</span>
+          </div>
+          <div
+            className="storage"
+            onClick={chooseTab}
+            style={{ cursor: "pointer" }}
+          >
+            <div>
+              <span>Interview practice</span>
+              <b>0</b>
+            </div>
+            <small>0 answers reviewed</small>
+          </div>
+          <Button onClick={chooseTab} className="side-cta">
+            <Icon name="play" size={17} /> Manage Content
+          </Button>
+          <div
+            className="profile"
+            onClick={chooseTab}
+            title="Sign in / Switch account"
+            style={{
+              cursor: "pointer",
+              borderRadius: 10,
+              padding: "6px 8px",
+              transition: "background 0.2s ease",
+            }}
+          >
+            <span
+              className="avatar"
+              style={{
+                border: "2px solid #34d399",
+              }}
+            >
+              SH
+            </span>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <strong
+                style={{
+                  fontSize: 11,
+                  display: "block",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  maxWidth: 95,
+                }}
+              >
+                Shekhar kumar
+              </strong>
+              <small style={{ color: "#34d399", fontWeight: 700 }}>
+                👩‍🏫 Teacher
+              </small>
+            </div>
+            <button
+              aria-label="Account Switcher"
+              title="Account Switcher"
+              onClick={(e) => {
+                e.stopPropagation()
+                chooseTab()
+              }}
+              style={{
+                border: 0,
+                background: "none",
+                color: "var(--muted)",
+                cursor: "pointer",
+                padding: 4,
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M8 3 4 7l4 4" />
+                <path d="M4 7h16" />
+                <path d="m16 21 4-4-4-4" />
+                <path d="M20 17H4" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      {menuOpen && (
+        <button
+          className="scrim"
+          aria-label="Close menu"
+          onClick={() => setMenuOpen(false)}
+        />
+      )}
+
+      <main className="main">
+        <header className="topbar">
+          <button
+            className="menu-button"
+            aria-label="Open menu"
+            onClick={() => setMenuOpen(true)}
+          >
+            <Icon name="menu" />
+          </button>
+          <div className="mobile-logo">
+            <Logo />
+          </div>
+          <button className="search-box" onClick={chooseTab}>
+            <Icon name="search" />
+            <span>Search courses, lessons, resources...</span>
+            <kbd>⌘ K</kbd>
+          </button>
+          <div className="top-actions">
+            <button className="demo-pill" onClick={chooseTab}>
+              <i /> LIVE AI TUTOR
+            </button>
+            <button
+              className="icon-btn"
+              aria-label="Sign in for notifications"
+              onClick={chooseTab}
+            >
+              <Icon name="bell" />
+            </button>
+            <button
+              className="avatar"
+              style={{
+                border: "2px solid #34d399",
+                background: "#3b4262",
+                color: "#fff",
+                cursor: "pointer",
+              }}
+              aria-label="Sign in to your account"
+              onClick={chooseTab}
+            >
+              SH
+            </button>
+          </div>
+        </header>
+        <Home
+          go={() => chooseTab()}
+          stats={null}
+          videos={[]}
+          onOpenUpload={chooseTab}
+          onOpenNotesUpload={chooseTab}
+          isTeacher={true}
+          landingOnly
+        />
+      </main>
+    </div>
+  )
+}
+
 function Home({
   go,
   stats,
@@ -3142,6 +3371,7 @@ function Home({
   onOpenUpload,
   onOpenNotesUpload,
   isTeacher = false,
+  landingOnly = false,
 }: {
   go: (r: Route) => void
   stats: Stats | null
@@ -3150,9 +3380,10 @@ function Home({
   onOpenUpload?: () => void
   onOpenNotesUpload?: () => void
   isTeacher?: boolean
+  landingOnly?: boolean
 }) {
   return (
-    <div className="page home-page">
+    <div className={`page home-page${landingOnly ? " landing-only" : ""}`}>
       <section className="hero">
         <div className="hero-copy reveal">
           <span className="hero-tag">
@@ -3218,19 +3449,27 @@ function Home({
             <span className="orb-ring a" />
             <span className="orb-ring b" />
           </div>
-          <div className="float-card fc-video">
+          <div
+            className="float-card fc-video"
+            onClick={() => go("workspace")}
+            style={{ cursor: "pointer" }}
+          >
             <span>
               <Icon name="play" size={14} />
             </span>
             <div>
               <small>LECTURE</small>
-              <strong>{videos[0]?.title || "Teaching Video"}</strong>
+              <strong>{videos[0]?.title || "WEB DEVELOPMENT explained SnapYT.App"}</strong>
               <i>
                 <b />
               </i>
             </div>
           </div>
-          <div className="float-card fc-pdf">
+          <div
+            className="float-card fc-pdf"
+            onClick={() => go("resources")}
+            style={{ cursor: "pointer" }}
+          >
             <span>
               <Icon name="file" size={16} />
             </span>
@@ -3239,7 +3478,11 @@ function Home({
               <strong>Course Notes</strong>
             </div>
           </div>
-          <div className="float-card fc-ai">
+          <div
+            className="float-card fc-ai"
+            onClick={() => go("workspace")}
+            style={{ cursor: "pointer" }}
+          >
             <span>
               <Icon name="spark" size={16} />
             </span>
@@ -3248,7 +3491,11 @@ function Home({
               <strong>Video Grounded</strong>
             </div>
           </div>
-          <div className="context-chip">
+          <div
+            className="context-chip"
+            onClick={() => go("workspace")}
+            style={{ cursor: "pointer" }}
+          >
             <i /> Context synced • Live AI
           </div>
         </div>
@@ -3271,7 +3518,11 @@ function Home({
             "Auto-generate quick quizzes from your uploaded videos.",
           ],
         ].map(([icon, title, text], i) => (
-          <div key={title}>
+          <div
+            key={title}
+            onClick={() => go("workspace")}
+            style={{ cursor: "pointer" }}
+          >
             <span className={`feature-icon f${i}`}>
               <Icon name={icon} />
             </span>
@@ -3282,7 +3533,9 @@ function Home({
           </div>
         ))}
       </section>
-      <section className="section-block">
+      {!landingOnly && (
+        <>
+          <section className="section-block">
         <div className="section-title">
           <div>
             <p className="eyebrow">
@@ -3449,6 +3702,8 @@ function Home({
           </div>
         </div>
       </section>
+        </>
+      )}
     </div>
   )
 }

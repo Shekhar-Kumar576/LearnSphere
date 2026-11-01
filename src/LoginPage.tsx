@@ -35,7 +35,7 @@ function GoogleIcon({ size = 18 }: { size?: number }) {
   )
 }
 
-export default function LoginPage() {
+export default function LoginPage({ onBack }: { onBack?: () => void } = {}) {
   const {
     loginWithEmail,
     registerWithEmail,
@@ -192,6 +192,29 @@ export default function LoginPage() {
           gap: 20,
         }}
       >
+        {onBack && (
+          <button
+            type="button"
+            onClick={onBack}
+            style={{
+              alignSelf: "flex-start",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              background: "rgba(255,255,255,0.06)",
+              border: "1px solid rgba(255,255,255,0.14)",
+              borderRadius: 8,
+              color: "#c7d2fe",
+              padding: "7px 14px",
+              fontSize: 12,
+              fontWeight: 600,
+              cursor: "pointer",
+              transition: "all 0.2s",
+            }}
+          >
+            ← Back to Landing Dashboard
+          </button>
+        )}
         {/* Brand Header */}
         <div
           style={{
