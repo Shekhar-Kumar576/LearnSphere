@@ -3189,112 +3189,55 @@ function LandingDashboard({ onLogin }: { onLogin: () => void }) {
             <span>Settings</span>
           </button>
         </nav>
-        <div className="side-bottom">
-          {/* Role badge */}
+        <div className="side-bottom" style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           <div
             onClick={chooseTab}
             style={{
+              padding: "12px",
+              borderRadius: "12px",
+              background: "rgba(108, 92, 231, 0.08)",
+              border: "1px solid rgba(108, 92, 231, 0.2)",
               display: "flex",
               alignItems: "center",
-              gap: 8,
-              padding: "9px 10px",
-              borderRadius: 10,
-              background: "rgba(52,211,153,0.08)",
-              border: "1px solid rgba(52,211,153,0.22)",
-              marginBottom: 10,
-              fontSize: 10,
-              fontWeight: 700,
-              color: "#34d399",
+              gap: "10px",
               cursor: "pointer",
-            }}
-          >
-            <span>👩‍🏫</span>
-            <span style={{ flex: 1 }}>Teacher Mode</span>
-          </div>
-          <div
-            className="storage"
-            onClick={chooseTab}
-            style={{ cursor: "pointer" }}
-          >
-            <div>
-              <span>Interview practice</span>
-              <b>0</b>
-            </div>
-            <small>0 answers reviewed</small>
-          </div>
-          <Button onClick={chooseTab} className="side-cta">
-            <Icon name="play" size={17} /> Manage Content
-          </Button>
-          <div
-            className="profile"
-            onClick={chooseTab}
-            title="Sign in / Switch account"
-            style={{
-              cursor: "pointer",
-              borderRadius: 10,
-              padding: "6px 8px",
-              transition: "background 0.2s ease",
             }}
           >
             <span
-              className="avatar"
               style={{
-                border: "2px solid #34d399",
+                width: 9,
+                height: 9,
+                borderRadius: "50%",
+                background: "#22c55e",
+                boxShadow: "0 0 0 4px rgba(34, 197, 94, 0.15)",
+                flexShrink: 0,
               }}
-            >
-              SH
-            </span>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <strong
-                style={{
-                  fontSize: 11,
-                  display: "block",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                  maxWidth: 95,
-                }}
-              >
-                Shekhar kumar
-              </strong>
-              <small style={{ color: "#34d399", fontWeight: 700 }}>
-                👩‍🏫 Teacher
-              </small>
+            />
+            <div style={{ display: "flex", flexDirection: "column", minWidth: 0 }}>
+              <strong style={{ fontSize: 11, color: "var(--text)" }}>AI Learning Workspace</strong>
+              <small style={{ fontSize: 9, color: "var(--muted)" }}>Sign in to start learning</small>
             </div>
-            <button
-              aria-label="Account Switcher"
-              title="Account Switcher"
-              onClick={(e) => {
-                e.stopPropagation()
-                chooseTab()
-              }}
-              style={{
-                border: 0,
-                background: "none",
-                color: "var(--muted)",
-                cursor: "pointer",
-                padding: 4,
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <svg
-                width="15"
-                height="15"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M8 3 4 7l4 4" />
-                <path d="M4 7h16" />
-                <path d="m16 21 4-4-4-4" />
-                <path d="M20 17H4" />
-              </svg>
-            </button>
           </div>
+          <button
+            onClick={chooseTab}
+            className="btn primary side-cta"
+            style={{
+              width: "100%",
+              minHeight: 42,
+              padding: "10px 14px",
+              borderRadius: 10,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 8,
+              fontSize: 12,
+              fontWeight: 700,
+              cursor: "pointer",
+            }}
+          >
+            <Icon name="spark" size={16} />
+            <span>Login / Sign Up</span>
+          </button>
         </div>
       </aside>
 
@@ -3328,24 +3271,11 @@ function LandingDashboard({ onLogin }: { onLogin: () => void }) {
               <i /> LIVE AI TUTOR
             </button>
             <button
-              className="icon-btn"
-              aria-label="Sign in for notifications"
+              className="topbar-login-btn"
               onClick={chooseTab}
             >
-              <Icon name="bell" />
-            </button>
-            <button
-              className="avatar"
-              style={{
-                border: "2px solid #34d399",
-                background: "#3b4262",
-                color: "#fff",
-                cursor: "pointer",
-              }}
-              aria-label="Sign in to your account"
-              onClick={chooseTab}
-            >
-              SH
+              <Icon name="spark" size={14} />
+              <span>Login / Sign Up</span>
             </button>
           </div>
         </header>
@@ -3359,6 +3289,457 @@ function LandingDashboard({ onLogin }: { onLogin: () => void }) {
           landingOnly
         />
       </main>
+    </div>
+  )
+}
+
+function LandingPublicContent({ go }: { go: (r: Route) => void }) {
+  return (
+    <div className="landing-public-content">
+      {/* 1. Student Reviews & Testimonials Section (PW.live inspired) */}
+      <section className="landing-reviews-section">
+        <div
+          className="section-title compact"
+          style={{
+            flexDirection: "column",
+            alignItems: "flex-start",
+            gap: 6,
+            marginBottom: 24,
+          }}
+        >
+          <p
+            className="eyebrow"
+            style={{ color: "var(--violet)", fontWeight: 800 }}
+          >
+            STUDENT SUCCESS STORIES
+          </p>
+          <h2 style={{ fontSize: 28, letterSpacing: "-0.8px" }}>
+            Loved by Thousands of Learners Worldwide
+          </h2>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              marginTop: 4,
+            }}
+          >
+            <span style={{ color: "#fbbf24", fontSize: 16 }}>★★★★★</span>
+            <span
+              style={{
+                fontSize: 13,
+                color: "var(--muted)",
+                fontWeight: 600,
+              }}
+            >
+              4.9/5 from 12,500+ verified student &amp; educator ratings
+            </span>
+          </div>
+        </div>
+
+        <div className="landing-reviews-grid">
+          {[
+            {
+              name: "Aarav Sharma",
+              role: "Software Development Engineer @ Razorpay",
+              avatarBg: "linear-gradient(135deg, #6366f1, #8b5cf6)",
+              initials: "AS",
+              tag: "Video Grounded Tutor",
+              quote:
+                "LearnSphere's timestamp-grounded AI tutor is revolutionary. Instead of re-watching hours of long lectures, I asked questions directly at the exact video moment and got instant, cited explanations. It completely changed how I prepped for placements.",
+            },
+            {
+              name: "Priya Patel",
+              role: "Final Year CS Student, NIT Trichy",
+              avatarBg: "linear-gradient(135deg, #06b6d4, #3b82f6)",
+              initials: "PP",
+              tag: "AI Mock Interview",
+              quote:
+                "The Mock Interview coach feels like a real senior staff engineer. It evaluated my algorithm explanations, pointed out edge cases, and scored my behavioral answers. I cleared my first on-campus placement with top package!",
+            },
+            {
+              name: "Rohan Mukherjee",
+              role: "Associate Cloud Engineer @ Infosys",
+              avatarBg: "linear-gradient(135deg, #10b981, #059669)",
+              initials: "RM",
+              tag: "PDF & Slide Synthesis",
+              quote:
+                "Uploading my lecture slide decks and generating interactive concept quizzes helped me retain technical material 3x faster. The interface is distraction-free, blisteringly fast, and genuinely smart.",
+            },
+            {
+              name: "Dr. Ananya Sen",
+              role: "Assistant Professor & Tech Educator",
+              avatarBg: "linear-gradient(135deg, #ec4899, #8b5cf6)",
+              initials: "AS",
+              tag: "Teacher Mode CMS",
+              quote:
+                "Teacher Mode in LearnSphere AI made managing video lectures and generating course quizzes effortless. My students are far more engaged, and their retention and test performance have noticeably improved.",
+            },
+          ].map((item, idx) => (
+            <div
+              key={idx}
+              className="landing-review-card"
+              onClick={() => go("workspace")}
+              style={{ cursor: "pointer" }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "flex-start",
+                  marginBottom: 12,
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                  <div
+                    style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: "50%",
+                      background: item.avatarBg,
+                      color: "#fff",
+                      fontWeight: 800,
+                      fontSize: 14,
+                      display: "grid",
+                      placeItems: "center",
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.25)",
+                    }}
+                  >
+                    {item.initials}
+                  </div>
+                  <div>
+                    <strong style={{ fontSize: 13, display: "block" }}>
+                      {item.name}
+                    </strong>
+                    <small style={{ fontSize: 11, color: "var(--muted)" }}>
+                      {item.role}
+                    </small>
+                  </div>
+                </div>
+                <span className="review-tag">{item.tag}</span>
+              </div>
+              <div style={{ color: "#fbbf24", fontSize: 14, marginBottom: 10 }}>
+                ★★★★★
+              </div>
+              <p
+                style={{
+                  fontSize: 12,
+                  lineHeight: 1.6,
+                  color: "var(--text)",
+                  opacity: 0.9,
+                }}
+              >
+                &ldquo;{item.quote}&rdquo;
+              </p>
+            </div>
+          ))}
+        </div>
+
+        {/* Trust metrics bar */}
+        <div className="landing-trust-strip">
+          <div>
+            <strong>50,000+</strong>
+            <small>Questions Answered with Citations</small>
+          </div>
+          <div>
+            <strong>99.2%</strong>
+            <small>Grounded Verification Accuracy</small>
+          </div>
+          <div>
+            <strong>15,000+</strong>
+            <small>Hours of Lectures Analyzed</small>
+          </div>
+          <div>
+            <strong>4.9 / 5.0</strong>
+            <small>Average Student Satisfaction ★</small>
+          </div>
+        </div>
+      </section>
+
+      {/* 2. Free Learning Resources Directory (Inspired by PW.live photo, customized for LearnSphere) */}
+      <section className="landing-resources-section">
+        <div
+          className="section-title compact"
+          style={{
+            flexDirection: "column",
+            alignItems: "flex-start",
+            gap: 6,
+            marginBottom: 24,
+          }}
+        >
+          <p
+            className="eyebrow"
+            style={{ color: "var(--violet)", fontWeight: 800 }}
+          >
+            LEARNING DIRECTORY
+          </p>
+          <h2 style={{ fontSize: 28, letterSpacing: "-0.8px" }}>
+            Free Learning Resources &amp; AI Tools
+          </h2>
+          <p style={{ fontSize: 13, color: "var(--muted)", margin: 0 }}>
+            Structured study materials, interactive AI tools, and interview modules inspired by world-class education portals.
+          </p>
+        </div>
+
+        <div className="landing-resources-grid">
+          <div className="landing-resource-col">
+            <h3>AI Study Materials</h3>
+            <ul>
+              {[
+                "AI Video Timestamp Notes",
+                "Interactive Lecture Summaries",
+                "Full-Stack Web Dev Cheatsheets",
+                "Data Structures & Algorithms Guide",
+                "Machine Learning & GenAI Handbook",
+                "System Design Blueprint",
+                "Python & TypeScript Notes",
+                "SQL & Database Architecture",
+                "Live AI Lecture Transcripts",
+              ].map((res) => (
+                <li key={res}>
+                  <button onClick={() => go("workspace")}>{res}</button>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="landing-resource-col">
+            <h3>AI Interactive Tools</h3>
+            <ul>
+              {[
+                "Live AI Video Tutor",
+                "AI Mock Technical Interview",
+                "Instant Cited Doubt Solver",
+                "Automated Quiz Generator",
+                "Slide & PDF Deconstructer",
+                "Smart Flashcard Maker",
+                "Voice-to-Note Transcriber",
+                "Personalized Study Roadmaps",
+                "Interactive Code Debugger",
+              ].map((res) => (
+                <li key={res}>
+                  <button onClick={() => go("workspace")}>{res}</button>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="landing-resource-col">
+            <h3>Core Tech Tracks</h3>
+            <ul>
+              {[
+                "React 19 & Next.js Full Stack",
+                "Python, FastAPI & RESTful APIs",
+                "Advanced DSA & LeetCode Prep",
+                "System Design & Microservices",
+                "Cloud Computing (AWS & GCP)",
+                "Docker, Kubernetes & CI/CD",
+                "Computer Networks & OS Core",
+                "Database Management Systems",
+                "Cyber Security Fundamentals",
+              ].map((res) => (
+                <li key={res}>
+                  <button onClick={() => go("workspace")}>{res}</button>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="landing-resource-col">
+            <h3>Career &amp; Placement</h3>
+            <ul>
+              {[
+                "FAANG / Tier-1 Software Engineering",
+                "College Semester Exam Prep",
+                "GATE CS & Engineering Prep",
+                "Data Science & Analytics Track",
+                "DevOps & SRE Career Blueprint",
+                "Technical Resume & Portfolio Review",
+                "Behavioral Interview Preparation",
+                "Coding Round Mock Challenges",
+                "Campus Placement Accelerator",
+              ].map((res) => (
+                <li key={res}>
+                  <button onClick={() => go("workspace")}>{res}</button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. About Us Section */}
+      <section className="landing-about-section">
+        <div className="about-header" style={{ marginBottom: 24 }}>
+          <p
+            className="eyebrow"
+            style={{ color: "var(--violet)", fontWeight: 800 }}
+          >
+            ABOUT LEARMSPHERE AI
+          </p>
+          <h2
+            style={{
+              fontSize: 28,
+              letterSpacing: "-0.8px",
+              margin: "6px 0 12px",
+            }}
+          >
+            Democratizing World-Class AI Tutoring for Everyone
+          </h2>
+          <p
+            style={{
+              fontSize: 14,
+              lineHeight: 1.7,
+              color: "var(--muted)",
+              maxWidth: 840,
+            }}
+          >
+            LearnSphere AI was designed to eliminate the struggle of passively watching endless video lectures and getting stuck on complex slides. We believe AI shouldn't generate generic hallucinations—it must understand your exact lecture materials, video timestamps, and curriculum to deliver precision answers grounded directly in what you study.
+          </p>
+        </div>
+
+        <div className="landing-about-grid">
+          <div
+            className="landing-about-card"
+            onClick={() => go("workspace")}
+            style={{ cursor: "pointer" }}
+          >
+            <div
+              className="about-icon"
+              style={{
+                background: "rgba(99, 102, 241, 0.12)",
+                color: "var(--violet)",
+              }}
+            >
+              <Icon name="spark" size={20} />
+            </div>
+            <h4>Source Grounding First</h4>
+            <p>
+              Every explanation cites the exact video timestamp or document page so you always learn with verifiable confidence.
+            </p>
+          </div>
+          <div
+            className="landing-about-card"
+            onClick={() => go("workspace")}
+            style={{ cursor: "pointer" }}
+          >
+            <div
+              className="about-icon"
+              style={{
+                background: "rgba(6, 182, 212, 0.12)",
+                color: "#06b6d4",
+              }}
+            >
+              <Icon name="quiz" size={20} />
+            </div>
+            <h4>Active Recall &amp; Quizzes</h4>
+            <p>
+              Automatically generate diagnostic quizzes, flashcards, and concept checks directly from uploaded videos and notes.
+            </p>
+          </div>
+          <div
+            className="landing-about-card"
+            onClick={() => go("workspace")}
+            style={{ cursor: "pointer" }}
+          >
+            <div
+              className="about-icon"
+              style={{
+                background: "rgba(16, 185, 129, 0.12)",
+                color: "#10b981",
+              }}
+            >
+              <Icon name="play" size={20} />
+            </div>
+            <h4>Mock Interview Coach</h4>
+            <p>
+              Practice realistic technical and behavioral interviews with instant feedback on clarity, structure, and depth.
+            </p>
+          </div>
+          <div
+            className="landing-about-card"
+            onClick={() => go("workspace")}
+            style={{ cursor: "pointer" }}
+          >
+            <div
+              className="about-icon"
+              style={{
+                background: "rgba(236, 72, 153, 0.12)",
+                color: "#ec4899",
+              }}
+            >
+              <Icon name="folder" size={20} />
+            </div>
+            <h4>Teacher &amp; Student Synergy</h4>
+            <p>
+              Instructors effortlessly manage courses and track student momentum, while students learn at their optimal pace.
+            </p>
+          </div>
+        </div>
+
+        {/* Final CTA Banner */}
+        <div className="landing-cta-banner">
+          <div>
+            <h3 style={{ fontSize: 22, margin: "0 0 6px", color: "#fff" }}>
+              Ready to Supercharge Your Learning?
+            </h3>
+            <p style={{ fontSize: 13, color: "#cbd5e1", margin: 0 }}>
+              Join thousands of students and educators mastering complex subjects today.
+            </p>
+          </div>
+          <button
+            onClick={() => go("workspace")}
+            className="btn primary"
+            style={{
+              padding: "12px 24px",
+              fontSize: 13,
+              fontWeight: 700,
+              borderRadius: 10,
+              boxShadow: "0 8px 24px rgba(108, 92, 231, 0.4)",
+              whiteSpace: "nowrap",
+            }}
+          >
+            Get Started Free — Login / Sign Up <Icon name="arrow" size={16} />
+          </button>
+        </div>
+      </section>
+
+      {/* 4. Global Landing Footer */}
+      <footer className="landing-footer">
+        <div className="landing-footer-top">
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            <Logo />
+            <p
+              style={{
+                fontSize: 12,
+                color: "var(--muted)",
+                maxWidth: 360,
+                margin: 0,
+              }}
+            >
+              AI-powered personalized learning companion grounded in your teaching videos, lecture notes, and study slides.
+            </p>
+          </div>
+          <div className="landing-footer-links">
+            <button onClick={() => go("workspace")}>Home</button>
+            <button onClick={() => go("workspace")}>Features</button>
+            <button onClick={() => go("workspace")}>Free Resources</button>
+            <button onClick={() => go("workspace")}>Student Reviews</button>
+            <button onClick={() => go("workspace")}>About Us</button>
+            <button onClick={() => go("workspace")}>Login / Sign Up</button>
+          </div>
+        </div>
+        <div className="landing-footer-bottom">
+          <span>
+            &copy; {new Date().getFullYear()} LearnSphere AI. All rights reserved.
+          </span>
+          <div style={{ display: "flex", gap: 16 }}>
+            <button onClick={() => go("workspace")}>Privacy Policy</button>
+            <button onClick={() => go("workspace")}>Terms of Service</button>
+            <button onClick={() => go("workspace")}>Security</button>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }
@@ -3533,7 +3914,9 @@ function Home({
           </div>
         ))}
       </section>
-      {!landingOnly && (
+      {landingOnly ? (
+        <LandingPublicContent go={go} />
+      ) : (
         <>
           <section className="section-block">
         <div className="section-title">

@@ -76,6 +76,56 @@
 .home-page.landing-only{padding-bottom:70px}
 .home-page.landing-only>.section-block,.home-page.landing-only>.home-lower{display:none}
 
+.topbar-login-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;border-radius:10px;background:linear-gradient(135deg,var(--violet),var(--indigo));color:#fff;font-weight:700;font-size:12px;border:none;cursor:pointer;box-shadow:0 4px 14px rgba(108,92,231,.35);transition:transform .2s,box-shadow .2s}
+.topbar-login-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(108,92,231,.45)}
+
+.landing-public-content{display:flex;flex-direction:column;gap:56px;margin-top:54px}
+.landing-reviews-section{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:36px 32px;box-shadow:var(--shadow)}
+.landing-reviews-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.landing-review-card{background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:22px;transition:transform .2s,border-color .2s}
+.landing-review-card:hover{transform:translateY(-2px);border-color:rgba(124,108,240,.4)}
+.review-tag{font-size:10px;font-weight:700;padding:4px 9px;border-radius:99px;background:rgba(124,108,240,.1);color:var(--violet);border:1px solid rgba(124,108,240,.2)}
+.landing-trust-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:28px;padding-top:24px;border-top:1px solid var(--line);text-align:center}
+.landing-trust-strip strong{display:block;font-size:22px;color:var(--violet);font-weight:800}
+.landing-trust-strip small{font-size:11px;color:var(--muted);margin-top:4px;display:block}
+
+.landing-resources-section{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:36px 32px;box-shadow:var(--shadow)}
+.landing-resources-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.landing-resource-col h3{font-size:15px;font-weight:800;color:var(--text);margin:0 0 16px;padding-bottom:10px;border-bottom:2px solid rgba(124,108,240,.25);letter-spacing:-.3px}
+.landing-resource-col ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px}
+.landing-resource-col button{border:0;background:none;padding:0;text-align:left;color:var(--muted);font-size:12px;font-weight:500;cursor:pointer;transition:color .2s,transform .2s;display:block;width:100%}
+.landing-resource-col button:hover{color:var(--violet);transform:translateX(3px)}
+
+.landing-about-section{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:36px 32px;box-shadow:var(--shadow)}
+.landing-about-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:32px}
+.landing-about-card{background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:22px;transition:transform .2s,border-color .2s}
+.landing-about-card:hover{transform:translateY(-2px);border-color:rgba(124,108,240,.4)}
+.about-icon{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;margin-bottom:14px}
+.landing-about-card h4{font-size:14px;margin:0 0 8px;font-weight:700}
+.landing-about-card p{font-size:12px;line-height:1.6;color:var(--muted);margin:0}
+.landing-cta-banner{background:linear-gradient(135deg,#121838,#231c5c 60%,#312e81);border:1px solid rgba(124,108,240,.3);border-radius:16px;padding:28px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;box-shadow:0 12px 32px rgba(0,0,0,.3)}
+
+.landing-footer{padding-top:20px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:20px}
+.landing-footer-top{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap}
+.landing-footer-links{display:flex;gap:20px;flex-wrap:wrap}
+.landing-footer-links button,.landing-footer-bottom button{border:0;background:none;color:var(--muted);font-size:12px;cursor:pointer;transition:color .2s}
+.landing-footer-links button:hover,.landing-footer-bottom button:hover{color:var(--violet)}
+.landing-footer-bottom{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--muted);border-top:1px solid var(--line);padding-top:18px;flex-wrap:wrap;gap:12px}
+
+@media(max-width:960px){
+  .landing-reviews-grid{grid-template-columns:1fr}
+  .landing-resources-grid{grid-template-columns:repeat(2,1fr)}
+  .landing-about-grid{grid-template-columns:repeat(2,1fr)}
+  .landing-trust-strip{grid-template-columns:repeat(2,1fr)}
+  .landing-cta-banner{flex-direction:column;align-items:flex-start}
+}
+@media(max-width:640px){
+  .landing-resources-grid{grid-template-columns:1fr}
+  .landing-about-grid{grid-template-columns:1fr}
+  .landing-trust-strip{grid-template-columns:1fr}
+  .landing-reviews-section,.landing-resources-section,.landing-about-section{padding:24px 18px}
+}
+
 /* ---- Mock Interview (readable sizes, uses existing theme variables) ---- */
 .iv-wrap{max-width:960px}.iv-wrap input,.iv-wrap select,.iv-wrap textarea{width:100%;background:var(--surface-2);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:11px 12px;font-size:14px}
 .iv-tabs{display:flex;gap:8px;border-bottom:1px solid var(--line);margin-bottom:20px}.iv-tabs button{border:0;background:none;color:var(--muted);padding:12px 6px;margin-right:12px;font-size:14px;font-weight:700;border-bottom:2px solid transparent}.iv-tabs button.active{color:var(--violet);border-color:var(--violet)}
